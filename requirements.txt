@@ -1,0 +1,36 @@
+# Local development environment (Python 3.13).
+# Versions are the ones installed where this project was developed.
+#
+# Not covered by this file:
+#   - serving/Dockerfile installs only the serving subset (python:3.13-slim),
+#     pinned to the same versions as below. Keep the two in sync: model.pkl
+#     is pickled with these versions.
+#   - KFP components install their own packages inside each pod via
+#     packages_to_install (pandas 2.2.2, numpy 1.26.4, scipy 1.13.0,
+#     scikit-learn 1.5.0, flaml[automl] 2.3.5).
+
+# Kubeflow Pipelines SDK -- matches the KFP 2.16.1 cluster from scripts/setup.ps1
+kfp==2.16.1
+
+# Data + ML
+pandas==2.3.3
+numpy==2.4.2
+scikit-learn==1.8.0
+
+# AutoML (generic version). FLAML can pick XGBoost or LightGBM, and the
+# pickled models need them installed to load.
+flaml[automl]==2.6.0
+xgboost==2.1.4
+lightgbm==4.6.0
+
+# Experiment tracking (local SQLite store: mlflow.db)
+mlflow==3.14.0
+
+# Serving APIs (serving/app.py, serving/generic_app.py)
+fastapi==0.139.0
+uvicorn==0.51.0
+pydantic==2.12.5
+
+# Frontends (frontend/app.py, frontend/generic_app.py)
+streamlit==1.59.2
+requests==2.32.5
