@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: titanic-serving
+  namespace: serving
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: titanic-serving
+  template:
+    metadata:
+      labels:
+        app: titanic-serving
+    spec:
+      containers:
+        - name: titanic-serving
+          image: titanic-serving:latest
+          # Never pull from a registry — the image was loaded via `minikube image load`
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
